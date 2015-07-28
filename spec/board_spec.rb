@@ -1,8 +1,8 @@
 require 'board'
 
 describe Board do
+  let (:ship){double :ship}
   describe '#place' do
-    let (:ship){double :ship}
     it { is_expected.to respond_to(:place).with(3).argument }
     it 'places ship in board location' do
       subject.place(ship,1,1)
@@ -28,6 +28,13 @@ describe Board do
     it "Should raise error if fired on previously fired location" do
       subject.fire(10,10)
       expect{subject.fire(10,10)}.to raise_error "You have already fired at this location"
+    end
+
+    it "Should hit the ship" do
+      ship = spy :ship
+      subject.place(ship,1,1)
+      subject.fire(1,1)
+      expect(ship).to have_received :hit
     end
   end
 end
